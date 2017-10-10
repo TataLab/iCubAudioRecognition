@@ -1,0 +1,3 @@
+/media/neuromorphic/data/iCubSpeechRecognition/src/SpeechRecognizer/build/CMakeFiles/rebuild_cache.dir
+/media/neuromorphic/data/iCubSpeechRecognition/src/SpeechRecognizer/build/CMakeFiles/edit_cache.dir
+/media/neuromorphic/data/iCubSpeechRecognition/src/SpeechRecognizer/build/CMakeFiles/speech_recognizer.dir
