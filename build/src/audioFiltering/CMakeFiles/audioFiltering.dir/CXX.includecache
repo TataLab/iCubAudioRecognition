@@ -321,8 +321,6 @@ sys/types.h
 -
 cstddef
 -
-stddef.h
--
 
 /usr/local/include/yarp/conf/system.h
 yarp/conf/numeric.h
@@ -389,7 +387,7 @@ yarp/os/PortWriterBuffer.h
 /usr/local/include/yarp/os/Bytes.h
 yarp/os/api.h
 -
-stddef.h
+cstddef
 -
 
 /usr/local/include/yarp/os/ConnectionReader.h
@@ -631,7 +629,7 @@ yarp/os/Portable.h
 -
 yarp/os/Bottle.h
 -
-stddef.h
+cstddef
 -
 
 /usr/local/include/yarp/os/api.h
@@ -639,7 +637,7 @@ yarp/conf/api.h
 -
 
 /usr/local/include/yarp/sig/Matrix.h
-stdlib.h
+cstdlib
 -
 memory.h
 -
@@ -657,7 +655,7 @@ yarp/sig/api.h
 -
 
 /usr/local/include/yarp/sig/Vector.h
-stddef.h
+cstddef
 -
 yarp/os/Portable.h
 -

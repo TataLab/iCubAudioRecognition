@@ -26,6 +26,14 @@ CMAKE_COLOR_MAKEFILE:BOOL=ON
 //CXX compiler
 CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
 
+//A wrapper around 'ar' adding the appropriate '--plugin' option
+// for the GCC compiler
+CMAKE_CXX_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-5
+
+//A wrapper around 'ranlib' adding the appropriate '--plugin' option
+// for the GCC compiler
+CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-5
+
 //Flags used by the compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=
 
@@ -44,6 +52,14 @@ CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //C compiler
 CMAKE_C_COMPILER:FILEPATH=/usr/bin/cc
+
+//A wrapper around 'ar' adding the appropriate '--plugin' option
+// for the GCC compiler
+CMAKE_C_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-5
+
+//A wrapper around 'ranlib' adding the appropriate '--plugin' option
+// for the GCC compiler
+CMAKE_C_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-5
 
 //Flags used by the compiler during all build types.
 CMAKE_C_FLAGS:STRING=
@@ -120,6 +136,9 @@ CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
 //qml plugins (lib/qt5/qml)
 CMAKE_INSTALL_QMLDIR:PATH=lib/qt5/qml
+
+//Run-time variable data (LOCALSTATEDIR/run)
+CMAKE_INSTALL_RUNSTATEDIR:PATH=
 
 //System admin executables (sbin)
 CMAKE_INSTALL_SBINDIR:PATH=sbin
@@ -280,9 +299,9 @@ CMAKE_CACHEFILE_DIR:INTERNAL=/media/neuromorphic/data/iCubAudioRecognition/build
 //Major version of cmake used to create the current loaded cache
 CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
-CMAKE_CACHE_MINOR_VERSION:INTERNAL=8
+CMAKE_CACHE_MINOR_VERSION:INTERNAL=9
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=1
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=4
 //ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
 CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.
@@ -293,6 +312,10 @@ CMAKE_CPACK_COMMAND:INTERNAL=/usr/local/bin/cpack
 CMAKE_CTEST_COMMAND:INTERNAL=/usr/local/bin/ctest
 //ADVANCED property for variable: CMAKE_CXX_COMPILER
 CMAKE_CXX_COMPILER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_COMPILER_AR
+CMAKE_CXX_COMPILER_AR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_COMPILER_RANLIB
+CMAKE_CXX_COMPILER_RANLIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_CXX_FLAGS
 CMAKE_CXX_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_CXX_FLAGS_DEBUG
@@ -305,6 +328,10 @@ CMAKE_CXX_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_CXX_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_COMPILER
 CMAKE_C_COMPILER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_C_COMPILER_AR
+CMAKE_C_COMPILER_AR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_C_COMPILER_RANLIB
+CMAKE_C_COMPILER_RANLIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_FLAGS
 CMAKE_C_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_FLAGS_DEBUG
@@ -315,6 +342,8 @@ CMAKE_C_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_C_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_FLAGS_RELWITHDEBINFO
 CMAKE_C_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//Path to cache edit program executable.
+CMAKE_EDIT_COMMAND:INTERNAL=/usr/local/bin/ccmake
 //Executable file format
 CMAKE_EXECUTABLE_FORMAT:INTERNAL=ELF
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS
@@ -366,6 +395,8 @@ CMAKE_INSTALL_MANDIR-ADVANCED:INTERNAL=1
 CMAKE_INSTALL_OLDINCLUDEDIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_INSTALL_QMLDIR
 CMAKE_INSTALL_QMLDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_RUNSTATEDIR
+CMAKE_INSTALL_RUNSTATEDIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_INSTALL_SBINDIR
 CMAKE_INSTALL_SBINDIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_INSTALL_SHAREDSTATEDIR
@@ -401,7 +432,7 @@ CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_RANLIB
 CMAKE_RANLIB-ADVANCED:INTERNAL=1
 //Path to CMake installation.
-CMAKE_ROOT:INTERNAL=/usr/local/share/cmake-3.8
+CMAKE_ROOT:INTERNAL=/usr/local/share/cmake-3.9
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS
 CMAKE_SHARED_LINKER_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_DEBUG
@@ -439,43 +470,43 @@ COMPILER_SUPPORTS_CXX11:INTERNAL=1
 //Details about finding webrtc-audio-processing
 FIND_PACKAGE_MESSAGE_DETAILS_webrtc-audio-processing:INTERNAL=[/usr/local/lib/libwebrtc_audio_processing.so][/usr/local/include][v()]
 //applications' XML descriptions installation directory for ICUBcontrib
-// (relative to build/installation dir
+// (relative to build/installation dir)
 ICUBCONTRIB_APPLICATIONS_INSTALL_DIR:INTERNAL=share/ICUBcontrib/applications
 //application templates' installation directory for ICUBcontrib
-// (relative to build/installation dir
+// (relative to build/installation dir)
 ICUBCONTRIB_APPLICATIONS_TEMPLATES_INSTALL_DIR:INTERNAL=share/ICUBcontrib/templates/applications
 //configuration files installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_CONFIG_INSTALL_DIR:INTERNAL=share/ICUBcontrib/config
 //contexts installation directory for ICUBcontrib (relative to
-// build/installation dir
+// build/installation dir)
 ICUBCONTRIB_CONTEXTS_INSTALL_DIR:INTERNAL=share/ICUBcontrib/contexts
 //general data installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_DATA_INSTALL_DIR:INTERNAL=share/ICUBcontrib
 //dynamic plugins installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_DYNAMIC_PLUGINS_INSTALL_DIR:INTERNAL=lib/ICUBcontrib
 //modules' XML descriptions installation directory for ICUBcontrib
-// (relative to build/installation dir
+// (relative to build/installation dir)
 ICUBCONTRIB_MODULES_INSTALL_DIR:INTERNAL=share/ICUBcontrib/modules
 //module templates' installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_MODULES_TEMPLATES_INSTALL_DIR:INTERNAL=share/ICUBcontrib/templates/modules
 //plugin manifests installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_PLUGIN_MANIFESTS_INSTALL_DIR:INTERNAL=share/ICUBcontrib/plugins
 //QML2 import directory for ICUBcontrib (relative to build/installation
-// dir
+// dir)
 ICUBCONTRIB_QML2_IMPORT_DIR:INTERNAL=lib/qt5/qml
 //robot-specific configurations installation directory for ICUBcontrib
-// (relative to build/installation dir
+// (relative to build/installation dir)
 ICUBCONTRIB_ROBOTS_INSTALL_DIR:INTERNAL=share/ICUBcontrib/robots
 //static plugins installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_STATIC_PLUGINS_INSTALL_DIR:INTERNAL=lib
 //general templates installation directory for ICUBcontrib (relative
-// to build/installation dir
+// to build/installation dir)
 ICUBCONTRIB_TEMPLATES_INSTALL_DIR:INTERNAL=share/ICUBcontrib/templates
 //List of iCub libraries
 ICUB_LIBRARIES:INTERNAL=iCubDev;ctrlLib;skinDynLib;iKin;iDyn;learningMachine;perceptiveModels;actionPrimitives

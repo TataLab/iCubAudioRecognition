@@ -20,18 +20,16 @@
 #include "webrtc/modules/audio_processing/beamformer/nonlinear_beamformer.h"
 #include "webrtc/common_audio/include/audio_util.h"
 
-
+using namespace std;
 using namespace webrtc;
 using namespace yarp::os;
 using namespace yarp::sig;
 using namespace yarp::dev;
 
-float PI = acos(-1.0);
-const int CHANNEL_SIZE = 16000;
-const int SAMPLE_RATE = 16000;
+double PI = acos(-1.0);
+const int SAMPLE_RATE = 48000;
 const int NUM_CHANNELS = 2;
-const int bufferSize = CHANNEL_SIZE*NUM_CHANNELS;
-const int NUM_PROCESS_FRAMES=100;
+
 
 int analog_level;
 int delay_ms = 20;
@@ -57,25 +55,10 @@ int main(int argc, char *argv[]) {
     Port outPort;
 
     inPort.open("/receiver");
-    outPort.open("/filtered");
+    outPort.open("/audioFiltering:o");
 
-    Network::connect("/grabber", "/receiver");
-    // Get an audio write device.
-    // Property conf;
-    // conf.put("device","portaudio");
-    // conf.put("samples", "4096");
-    // conf.put("write", "1");
-    //
-    // PolyDriver poly(conf);
-    // IAudioRender *put;
-    // // Make sure we can write sound
-    //
-    // poly.view(put);
-    // if (put==NULL) {
-    //     printf("cannot open interface\n");
-    //     return 1;
-    // }
-    //Receive and render
+    Network::connect("/sender", "/receiver");
+
     Sound *s;
     while (true) {
 
@@ -83,16 +66,50 @@ int main(int argc, char *argv[]) {
 
       if (s!=NULL) {
           //Sound filtered = processFrame(*s);
-          //std::cout << s->getSamples() << std::endl;
+          //cout << s->getSamples() << endl;
           Sound filtered(*s);
 
-          for(int i=0; i<NUM_PROCESS_FRAMES; i++) {
-            Sound section = s->subSound((CHANNEL_SIZE/NUM_PROCESS_FRAMES)*i, (CHANNEL_SIZE/NUM_PROCESS_FRAMES)*(i+1));
+          int frameSize = s->getSamples();
+          //number of 10ms frames
+          int numFrames = frameSize/(SAMPLE_RATE/100);
+
+          //remaining data at end
+          int remainingData = frameSize%(SAMPLE_RATE/100);
+
+          //filter sound 10ms at a time
+          for(int i=0; i<numFrames; i++) {
+            Sound section = s->subSound((frameSize/numFrames)*i, (frameSize/numFrames)*(i+1));
             Sound filtChunk = processFrame(section);
 
             for(int j=0; j<filtChunk.getSamples(); j++) {
-              filtered.set(filtChunk.get(j, 0), (CHANNEL_SIZE/NUM_PROCESS_FRAMES)*i+j, 0);
-              filtered.set(filtChunk.get(j, 1), (CHANNEL_SIZE/NUM_PROCESS_FRAMES)*i+j, 1);
+              filtered.set(filtChunk.get(j, 0), (frameSize/numFrames)*i+j, 0);
+              filtered.set(filtChunk.get(j, 1), (frameSize/numFrames)*i+j, 1);
+            }
+          }
+
+          //if sound length isn't multiple of sampling rate
+          if(remainingData > 0) {
+            Sound endChunk = s->subSound(0, (SAMPLE_RATE/100));
+
+            //set chunk to zero
+            for(int i=0; i< endChunk.getSamples(); i++) {
+              endChunk.set(0, i, 0);
+              endChunk.set(0, i, 1);
+            }
+
+            //load remaining samples into beginning of chunk
+            for(int i=0; i<remainingData; i++) {
+              endChunk.set(s->get(frameSize-remainingData+i, 0), i, 0);
+              endChunk.set(s->get(frameSize-remainingData+i, 1), i, 1);
+            }
+
+            //filter remaining samples
+            Sound filteredEndChunk = processFrame(endChunk);
+
+            //load remaining samples into end of filtered chunk
+            for(int i=0; i<remainingData; i++) {
+              filtered.set(filteredEndChunk.get(i, 0),frameSize-remainingData+i, 0);
+              filtered.set(filteredEndChunk.get(i, 0),frameSize-remainingData+i, 1);
             }
           }
 
@@ -106,7 +123,7 @@ int main(int argc, char *argv[]) {
 }
 
  Sound processFrame(Sound input) {
-   //std::cout << input.getSamples() << std::endl;
+   //cout << input.getSamples() << endl;
 
    int frameDataSize = input.getSamples() * input.getChannels();
 
@@ -139,7 +156,7 @@ int main(int argc, char *argv[]) {
    //beamformer->ProcessChunk(channelBuffer, &channelBuffer);
 
    if ((webrtcErr = apm->ProcessStream(channelBuffer.channels(), inputConfig, outputConfig, filteredChannelBuffer.channels())) < 0)
-    std::cerr << "error processing stream: " << webrtcErr << " " << AudioProcessing::kNoError << std::endl;
+    cerr << "error processing stream: " << webrtcErr << " " << AudioProcessing::kNoError << endl;
 
    analog_level = apm->gain_control()->stream_analog_level();
    //run beamformer
@@ -162,7 +179,7 @@ int main(int argc, char *argv[]) {
 void initializeAudioProcessing(SphericalPointf direction) {
   webrtc::Config config;
 
-  std::vector<Point> array_geometry;
+  vector<Point> array_geometry;
 
   array_geometry.push_back(Point(-0.04f, 0.f, 0.f));
   array_geometry.push_back(Point( 0.04f, 0.f, 0.f));
