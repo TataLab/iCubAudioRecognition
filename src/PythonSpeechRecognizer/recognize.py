@@ -102,7 +102,7 @@ r = DataProcessor()
 speechAudioPort.setReader(r)
 speechAudioPort.open("/speech/audio");
 
-yarp.Network.connect("/filtered", "/speech/audio");
+yarp.Network.connect("/grabber", "/speech/audio");
 
 yarp.Time.delay(100)
 print("Test program timer finished")
