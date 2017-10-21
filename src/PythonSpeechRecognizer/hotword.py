@@ -24,8 +24,8 @@ FLAGS = None
 RECOGNITION_SAMPLE_RATE=16000
 
 yarp.Network.init()
-#writePort = yarp.BufferedPortBottle()
-#writePort.open('/speech/text')
+writePort = yarp.BufferedPortBottle()
+writePort.open('/speech/text')
 
 def load_graph(filename):
   """Unpersists graph from file as default graph."""
@@ -63,7 +63,10 @@ class DataProcessor(yarp.PortReader):
         # Sort to show labels in order of confidence
         top_k = predictions.argsort()[-3:][::-1]
 
-        if predictions[top_k[0]] < 0.5:
+        if top_k[0] == 0:
+            return False;
+
+        if predictions[top_k[0]] < 0.6:
             return False;
 
         if time()-self.lastPrediction < 1.0:
@@ -75,6 +78,11 @@ class DataProcessor(yarp.PortReader):
           human_string = self.labels[node_id]
           score = predictions[node_id]
           print('%s (score = %.5f)' % (human_string, score))
+
+        bottle = writePort.prepare()
+        bottle.clear()
+        bottle.addString(self.labels[top_k[0]])
+        writePort.write()
 
         print("\n")
 
