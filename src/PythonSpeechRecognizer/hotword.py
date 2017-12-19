@@ -25,7 +25,7 @@ RECOGNITION_SAMPLE_RATE=16000
 
 yarp.Network.init()
 writePort = yarp.BufferedPortBottle()
-writePort.open('/speech/text')
+writePort.open('/speech:o')
 
 def load_graph(filename):
   """Unpersists graph from file as default graph."""
